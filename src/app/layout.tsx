@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/context/AuthContext";
+import LightRays from "@/components/LightRays";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} min-h-screen flex flex-col antialiased`}>
+      <body className={`${inter.className} min-h-screen flex flex-col antialiased bg-[#020617]`}>
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#9333ea"
+          raysSpeed={1.2}
+          lightSpread={0.4}
+          rayLength={3}
+          followMouse={true}
+          mouseInfluence={0.15}
+          noiseAmount={0.02}
+          distortion={0.05}
+          className="fixed opacity-50"
+          pulsating={true}
+          fadeDistance={1}
+          saturation={1.5}
+        />
         <AuthProvider>
           <Navbar />
           <main className="flex-1 flex flex-col h-full relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
