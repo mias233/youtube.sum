@@ -23,13 +23,6 @@ export default function Home() {
       return;
     }
 
-    const apiKey = localStorage.getItem("gemini_api_key");
-    if (!apiKey) {
-      setError("Gemini API Key is missing. Please set it in Settings.");
-      window.dispatchEvent(new CustomEvent("open-settings"));
-      return;
-    }
-
     setIsProcessing(true);
     setError(null);
     setVideoData(null);
@@ -53,10 +46,12 @@ export default function Home() {
       
       const sumRes = await fetch("/api/summarize", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(apiKey ? { "x-api-key": apiKey } : {})
+        },
         body: JSON.stringify({ 
           videoId: metaData.videoId, 
-          apiKey,
           title: metaData.title,
           author: metaData.author_name
         }),

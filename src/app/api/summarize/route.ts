@@ -4,14 +4,17 @@ import { GoogleGenAI } from "@google/genai";
 
 export async function POST(req: Request) {
   try {
-    const { videoId, apiKey, style, title, author } = await req.json();
-    if (!videoId) {
-      return NextResponse.json({ error: "videoId is required" }, { status: 400 });
+    const { videoId, style, title, author } = await req.json();
+    
+    // Read API key from headers first, then fallback to environment variable
+    const apiKey = req.headers.get("x-api-key") || process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json({ error: "Gemini API key is missing. Add GEMINI_API_KEY to .env.local" }, { status: 401 });
     }
 
-    const key = apiKey || process.env.GEMINI_API_KEY;
-    if (!key) {
-      return NextResponse.json({ error: "Gemini API Key is missing. Please set it in Settings." }, { status: 401 });
+    if (!videoId) {
+      return NextResponse.json({ error: "videoId is required" }, { status: 400 });
     }
 
     let transcript = await getTranscript(videoId);
@@ -22,7 +25,7 @@ export async function POST(req: Request) {
       isFallback = true;
     }
 
-    const ai = new GoogleGenAI({ apiKey: key });
+    const ai = new GoogleGenAI({ apiKey });
     const tone = style || "Professional";
     
     const prompt = `You are an expert video summarizer. Analyze the following transcript from a YouTube video and provide a comprehensive structured output in JSON.

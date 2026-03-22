@@ -1,27 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { Settings, Youtube, LogOut, Loader2 } from "lucide-react";
+import { Youtube, LogOut, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import SettingsModal from "./SettingsModal";
 import AuthModal from "./AuthModal";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/lib/firebase";
 
 export default function Navbar() {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    const handleOpenSettings = () => setIsSettingsOpen(true);
     const handleOpenAuth = () => setIsAuthOpen(true);
-    
-    window.addEventListener("open-settings", handleOpenSettings);
     window.addEventListener("open-auth", handleOpenAuth);
     
     return () => {
-      window.removeEventListener("open-settings", handleOpenSettings);
       window.removeEventListener("open-auth", handleOpenAuth);
     };
   }, []);
@@ -72,20 +66,10 @@ export default function Navbar() {
               </button>
             )}
 
-            <div className="w-px h-6 bg-white/10 mx-1 hidden sm:block"></div>
-
-            <button 
-              onClick={() => setIsSettingsOpen(true)}
-              className="p-2 text-muted-foreground hover:text-white transition-colors rounded-full hover:bg-white/5 group bg-white/5 border border-white/10"
-              title="Settings"
-            >
-              <Settings className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
-            </button>
           </div>
         </div>
       </header>
       
-      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
     </>
   );
