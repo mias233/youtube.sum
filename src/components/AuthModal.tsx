@@ -58,8 +58,8 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       onClose();
-    } catch (err: any) {
-      setError(err.message.replace("Firebase: ", ""));
+    } catch (err: unknown) {
+      setError((err as Error).message.replace("Firebase: ", ""));
     } finally {
       setLoading(false);
     }
