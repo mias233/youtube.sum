@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       author_name: metadata.author_name,
       thumbnail_url: metadata.thumbnail_url,
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || "Something went wrong" }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: (error as Error).message || "Something went wrong" }, { status: 500 });
   }
 }

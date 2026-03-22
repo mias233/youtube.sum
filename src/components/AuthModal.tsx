@@ -39,8 +39,8 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         }
       }
       onClose();
-    } catch (err: any) {
-      setError(err.message.replace("Firebase: ", ""));
+    } catch (err: unknown) {
+      setError((err as Error).message.replace("Firebase: ", ""));
     } finally {
       setLoading(false);
     }

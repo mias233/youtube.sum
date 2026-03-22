@@ -68,8 +68,8 @@ export default function Home() {
       setTranscript(sumData.transcript);
       setSummaryData(sumData.summary);
       
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError((err as Error).message);
     } finally {
       setIsProcessing(false);
       setLoadingStep("");

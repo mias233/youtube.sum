@@ -59,8 +59,8 @@ ${transcript.substring(0, 50000)}
        transcript,
        summary: JSON.parse(text)
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Summarize API Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to generate summary" }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message || "Failed to generate summary" }, { status: 500 });
   }
 }
